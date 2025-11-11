@@ -1,0 +1,102 @@
+/* src/pages/user/UserDashboardPage.css */
+.dashboard-container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1.5rem;
+    color: #333; /* Ganti warna jika temamu gelap */
+}
+
+.dashboard-container h1 {
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 1rem;
+    margin-bottom: 2rem;
+}
+
+.dashboard-section {
+    margin-bottom: 3rem;
+}
+
+.dashboard-section h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+/* Kita tidak perlu style .item-list lagi, karena sudah ada */
+
+.booking-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.booking-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    background-color: #f9f9f9;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+.booking-item strong {
+    font-weight: 600;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between; /* Judul di kiri, tombol di kanan */
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.section-header h2 {
+    margin: 0; /* Hapus margin default h2 */
+}
+
+.pagination-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem; /* Jarak antar tombol/teks */
+}
+
+.pagination-controls span {
+    font-size: 0.9rem;
+    color: #777;
+    font-weight: 500;
+}
+
+/* Atur ukuran tombol pagination */
+.pagination-controls .btn {
+    padding: 0.4rem 0.8rem;
+    font-weight: bold;
+}
+
+.pagination-controls .btn:disabled {
+    background-color: #eee;
+    color: #ccc;
+    cursor: not-allowed;
+}
+.dashboard-list.item-list {
+    /* Paksa grid untuk jadi 3 kolom,
+      tidak peduli berapa banyak item di dalamnya.
+    */
+    grid-template-columns: repeat(3, 1fr);
+}
+
+/* Jadikan responsif juga, untuk jaga-jaga
+*/
+@media (max-width: 900px) {
+    .dashboard-list.item-list {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .dashboard-list.item-list {
+        grid-template-columns: 1fr;
+    }
+}
+.cancel-button {
+    margin: 32px 0 16px;
+}

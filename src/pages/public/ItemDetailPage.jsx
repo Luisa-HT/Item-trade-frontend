@@ -1,0 +1,277 @@
+// src/pages/public/ItemDetailPage.jsx
+import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { getItemById, deleteItem } from '../../services/itemService';
+import { createBooking } from '../../services/bookingService'; // Kita siapkan untuk tombol booking
+import { useAuth } from '../../context/AuthContext';
+import Button from '../../components/common/Button';
+import Modal from '../../components/common/Modal';
+import PlaceholderImage from '../../assets/placeholder.jpg';
+import './ItemDetailPage.css';
+
+const ItemDetailPage = () => {
+    const { id } = useParams(); // Mengambil 'id' dari URL (misal: /item/123)
+    const [item, setItem] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const [currentImageIndex, setCurrentImageIndex] = useState(0);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isCopied, setIsCopied] = useState(false);
+    const navigate = useNavigate();
+    const { isAuthenticated, user } = useAuth();
+
+    useEffect(() => {
+        const fetchItem = async () => {
+            try {
+                setIsLoading(true); // Selalu set loading di awal
+                const response = await getItemById(id);
+                setItem(response.data);
+                console.log(response.data,'response');
+                setCurrentImageIndex(0);
+            } catch (err) {
+                console.error(err);
+                // Ini adalah error 500 yang kamu sebutkan
+                setError('Gagal memuat detail item. Backend mungkin sedang bermasalah.');
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        fetchItem();
+    }, [id]); // Ambil data lagi jika ID di URL berubah
+
+
+    const handleBooking = async () => {
+        if (!isAuthenticated) {
+            alert('Kamu harus login untuk melihat info kontak pemilik.');
+            return;
+        }
+
+        // Alih-alih 'alert', kita BUKA MODAL
+        setIsModalOpen(true);
+
+        // (Opsional) Jika kamu masih ingin memanggil createBooking:
+        createBooking(item.id, {}).catch(err => console.error(err));
+    };
+    const handleCopy = () => {
+        if (ownerPhone !== 'Kontak tidak tersedia') {
+            navigator.clipboard.writeText(ownerPhone).then(() => {
+                // This runs after the text is copied
+                setIsCopied(true);
+                // Reset the button text after 2 seconds
+                setTimeout(() => {
+                    setIsCopied(false);
+                }, 2000);
+            }).catch(err => {
+                console.error('Failed to copy text: ', err);
+            });
+        }
+    };
+    const handlePrevImage = () => {
+        if (!item?.media || item.media.length === 0) return;
+        setCurrentImageIndex(prevIndex =>
+            // Jika di gambar pertama, lompat ke gambar terakhir
+            prevIndex === 0 ? item.media.length - 1 : prevIndex - 1
+        );
+    };
+
+    const handleNextImage = () => {
+        if (!item?.media || item.media.length === 0) return;
+        setCurrentImageIndex(prevIndex =>
+            // Jika di gambar terakhir, lompat ke gambar pertama
+            prevIndex === item.media.length - 1 ? 0 : prevIndex + 1
+        );
+    };
+
+    const handleThumbnailClick = (index) => {
+        setCurrentImageIndex(index);
+    };
+
+    // Tampilkan loading atau error
+    if (isLoading) return <div className="loading-text">Loading item...</div>;
+    if (error) return <div className="error-text">{error}</div>;
+    if (!item) return <div>Item tidak ditemukan.</div>;
+
+    const BACKEND_URL = 'https://server.welazure.dev';
+
+    const ownerPhone = item?.user?.phoneNumber || 'Kontak tidak tersedia';
+    const images = item?.media || [];
+    const currentMedia = images[currentImageIndex];
+    const mainImageUrl = images.length > 0
+        ? BACKEND_URL + currentMedia.filePath
+        : PlaceholderImage;//'https://via.placeholder.com/400?text=No+Image'; // Gambar placeholder
+    // const mainImageUrl = PlaceholderImage;
+    console.log(mainImageUrl, 'mainImageUrl');
+    console.log(images, 'images');
+    const handleDelete = async () => {
+        if (window.confirm('Apakah kamu yakin ingin menghapus item ini? Ini tidak bisa dibatalkan.')) {
+            try {
+                await deleteItem(id);
+                alert('Item berhasil dihapus.');
+                navigate('/dashboard'); // Arahkan user kembali ke dashboard
+            } catch (err) {
+                console.error('Gagal menghapus item:', err);
+                alert('Gagal menghapus item.');
+            }
+        }
+    };
+    const isOwner = user?.id === item?.user?.id;
+
+    return (
+        <div className="detail-page-container">
+            {/* Bagian Atas: Gambar & Info */}
+            <div className="detail-top-section">
+
+                {/* Kolom Kiri: Gambar */}
+                <div className="detail-image-section">
+
+                    {/* Wrapper baru untuk gambar utama + tombol */}
+                    <div className="carousel-main">
+                        <img
+                            src={mainImageUrl}
+                            alt={item.name}
+                            className="main-image"
+                        />
+                        {/* Tampilkan tombol hanya jika ada > 1 gambar */}
+                        {images.length > 1 && (
+                            <>
+                                <button className="carousel-button-prev" onClick={handlePrevImage}>&#10094;</button>
+                                <button className="carousel-button-next" onClick={handleNextImage}>&#10095;</button>
+                            </>
+                        )}
+                    </div>
+
+                    {/* Tampilkan thumbnail hanya jika ada > 1 gambar */}
+                    {images.length > 1 && (
+                        <div className="thumbnail-gallery">
+                            {images.map((img, index) => (
+                                <img
+                                    key={img.id || index}
+                                    src={BACKEND_URL + img.filePath} // <-- KODE BARU
+                                    alt={`${item.name} thumbnail ${index + 1}`}
+                                    className={`thumbnail ${index === currentImageIndex ? 'active' : ''}`}
+                                    onClick={() => handleThumbnailClick(index)}
+                                />
+                            ))}
+                        </div>
+                    )}
+                </div>
+                {/* Kolom Kanan: Info & Aksi */}
+                <div className="detail-info-section">
+                    <h1 className="detail-title">{item.name}</h1>
+                    <div className="detail-bottom-section">
+                        <div className="specs-section">
+                            <h3>Spesifikasi Produk</h3>
+                            <div className="specs-grid">
+                                <div className="spec-item">
+                                    <label>Kategori</label>
+                                    <span>{item.category?.name || 'Tidak ada'}</span>
+                                </div>
+                                <div className="spec-item">
+                                    <label>Pemilik</label>
+                                    <div className="spec-item-owner">
+                            <span className="username">{item.user?.username || 'Tidak ada'}
+                            </span>
+                                        {/*<span>*/}
+                                        {/*    {item.user?.phoneNumber || 'Tidak ada'}*/}
+                                        {/*</span>*/}
+                                    </div>
+
+                                </div>
+                                <div className="spec-item">
+                                    <label>Status</label>
+                                    <span>{item.status || 'Tersedia'}</span>
+                                </div>
+                                {/* Tambahkan spesifikasi lain dari API kamu di sini */}
+                            </div>
+                        </div>
+
+                        <div className="description-section">
+                            <h3>Deskripsi Produk</h3>
+                            <p>{item.description}</p>
+                        </div>
+                    </div>
+
+                    {/* Tombol Aksi */}
+                    <div className="action-button">
+                        {isOwner ? (
+                            // Jika user adalah PEMILIK
+                            <Button variant="danger" onClick={handleDelete}>
+                                Hapus Item Ini
+                            </Button>
+                        ) : (
+                            // Jika user BUKAN pemilik
+                            <Button variant="primary" onClick={handleBooking}>
+                                Ajukan Penukaran
+                            </Button>
+                        )}
+                    </div>
+                </div>
+            </div>
+
+            {/* Bagian Bawah: Spesifikasi & Deskripsi */}
+            {/*<div className="detail-bottom-section">*/}
+            {/*    <div className="specs-section">*/}
+            {/*        <h3>Spesifikasi Produk</h3>*/}
+            {/*        <div className="specs-grid">*/}
+            {/*            <div className="spec-item">*/}
+            {/*                <label>Kategori</label>*/}
+            {/*                <span>{item.category?.name || 'Tidak ada'}</span>*/}
+            {/*            </div>*/}
+            {/*            <div className="spec-item">*/}
+            {/*                <label>Pemilik</label>*/}
+            {/*                <div className="spec-item-owner">*/}
+            {/*                <span className="username">{item.user?.username || 'Tidak ada'}*/}
+            {/*                </span>*/}
+            {/*                /!*<span>*!/*/}
+            {/*                /!*    {item.user?.phoneNumber || 'Tidak ada'}*!/*/}
+            {/*                /!*</span>*!/*/}
+            {/*                </div>*/}
+
+            {/*            </div>*/}
+            {/*            <div className="spec-item">*/}
+            {/*                <label>Status</label>*/}
+            {/*                <span>{item.status || 'Tersedia'}</span>*/}
+            {/*            </div>*/}
+            {/*            /!* Tambahkan spesifikasi lain dari API kamu di sini *!/*/}
+            {/*        </div>*/}
+            {/*    </div>*/}
+
+            {/*    <div className="description-section">*/}
+            {/*        <h3>Deskripsi Produk</h3>*/}
+            {/*        <p>{item.description}</p>*/}
+            {/*    </div>*/}
+            {/*</div>*/}
+            <Modal
+                isOpen={isModalOpen}
+                onClose={() => {
+                    setIsModalOpen(false);
+                    setIsCopied(false); // Reset tombol copy saat modal ditutup
+                }}
+            >
+                <div>
+                    <h2 style={{ marginTop: 0 }}>Hubungi Pemilik</h2>
+                    <p>Permintaan booking telah dikirim ke pemilik.</p>
+                    <p>Silakan hubungi pemilik langsung di:</p>
+
+                    <div className="contact-copy-wrapper">
+                        <h3 className="contact-number-box">
+                            {ownerPhone}
+                        </h3>
+
+                        <button
+                            className="copy-button"
+                            onClick={handleCopy}
+                            disabled={isCopied}
+                        >
+                            {isCopied ? 'Copied!' : 'Copy'}
+                        </button>
+                    </div>
+
+                </div>
+            </Modal>
+        </div>
+    );
+};
+
+export default ItemDetailPage;

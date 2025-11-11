@@ -1,0 +1,115 @@
+/* src/components/item/ItemForm.css */
+/* Kita tiru style dari AuthForm agar konsisten */
+.item-form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: darkgray;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+    padding: 0.75rem 1rem;
+    border: 1px solid #555;
+    border-radius: 6px;
+    font-size: 1rem;
+    background-color: #ffffff;
+    color: #fff;
+    font-family: inherit; /* Pastikan font konsisten */
+}
+
+/* Style khusus untuk input file */
+.form-group input[type="file"] {
+    padding: 0.5rem;
+}
+.choose-file-button {
+    background-color: #42B28C;
+}
+.submit-button {
+    width: 100%;
+    margin-top: 1rem;
+    padding: 0.75rem;
+    font-size: 1.1rem;
+}
+
+.form-error {
+    color: #ff6b6b;
+    background-color: rgba(255, 107, 107, 0.1);
+    border: 1px solid #ff6b6b;
+    border-radius: 6px;
+    padding: 0.75rem;
+    text-align: center;
+    margin: 0;
+}
+/* src/components/item/ItemForm.css */
+
+/* ... (semua style kamu yang sudah ada) ... */
+
+
+/* --- TAMBAHKAN SEMUA STYLE INI DI BAWAH --- */
+
+/* 1. Sembunyikan input file yang asli */
+.file-upload-input {
+    display: none;
+}
+
+/* 2. Beri style pada label agar terlihat seperti tombol */
+.file-upload-label {
+    display: inline-block;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    font-weight: 500;
+    text-align: center;
+    cursor: pointer;
+
+    /* Tiru style tombol 'secondary' kamu */
+    background-color: #f0f0f0;
+    color: #333;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+
+    transition: background-color 0.2s;
+}
+
+.file-upload-label:hover {
+    background-color: #e0e0e0;
+}
+
+/* 3. Style untuk menampilkan nama file */
+.file-names-display {
+    margin-top: 0.75rem;
+    font-size: 0.9rem;
+    color: #ccc; /* Sesuaikan untuk dark/light mode */
+    font-style: italic;
+    /* Mencegah teks jadi terlalu panjang */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
+    max-width: 100%;
+}
+/* This will ONLY work in Chrome, Safari, and Edge */
+.item-form input[type="file"]::-webkit-file-upload-button {
+    background-color: lightgray;
+    color: #333333;
+    border: 1px solid #666;
+    border-radius: 6px;
+    /*padding: 0.75rem 1rem;*/
+    cursor: pointer;
+}
+
+.item-form input[type="file"]::-webkit-file-upload-button:hover {
+    background-color: #225D49;
+}

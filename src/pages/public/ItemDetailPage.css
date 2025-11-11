@@ -1,0 +1,308 @@
+/* src/pages/public/ItemDetailPage.css */
+
+.detail-page-container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1.5rem;
+}
+
+/* Bagian Atas: Flexbox Layout */
+.detail-top-section {
+    display: flex;
+    gap: 2rem;
+}
+
+/* Kolom Kiri: Gambar */
+.detail-image-section {
+    flex: 0 0 40%; /* Lebar 40% */
+}
+
+.main-image {
+    width: 100%;
+    border-radius: 8px;
+    border: 1px solid #eee;
+    aspect-ratio: 1 / 1; /* Membuat gambar kotak */
+    object-fit: cover;
+}
+
+.thumbnail-gallery {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    flex-wrap: wrap;
+}
+
+.thumbnail {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 4px;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: border-color 0.2s;
+}
+
+.thumbnail:hover,
+.thumbnail.active {
+    border-color: #007bff; /* Ganti dengan warna tema kamu */
+}
+
+/* Kolom Kanan: Info */
+.detail-info-section {
+    flex: 0 0 60%; /* Lebar 60% */
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+}
+.detail-info-top {
+    display: block;
+    justify-content: flex-start;
+
+}
+
+.detail-title {
+    font-size: 2rem;
+    font-weight: 600;
+    margin: 0 0 0.5rem 0;
+    color: #333; /* Ganti untuk dark mode */
+}
+
+.detail-rating {
+    font-size: 0.9rem;
+    color: #777;
+    margin-bottom: 1rem;
+}
+
+.detail-price {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #3D4F61; /* Ganti dengan warna tema kamu */
+    margin-bottom: 1.5rem;
+}
+
+.info-block {
+    margin-bottom: 1.5rem;
+}
+.info-block label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: #555;
+}
+
+.quantity-selector {
+    display: flex;
+    align-items: center;
+}
+
+.quantity-selector button {
+    width: 30px;
+    height: 30px;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+    cursor: pointer;
+    font-size: 1.2rem;
+}
+
+.quantity-selector span {
+    width: 50px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+.action-buttons button {
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+}
+
+/* Bagian Bawah */
+.detail-bottom-section {
+    margin-top: 3rem;
+    border-top: 1px solid #eee;
+    padding-top: 2rem;
+}
+
+.specs-section,
+.description-section {
+    margin-bottom: 2rem;
+}
+
+.specs-section h3,
+.description-section h3 {
+    font-size: 1.25rem;
+    margin-bottom: 1.5rem;
+    color: #333;
+}
+
+.specs-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.spec-item {
+    display: flex;
+    font-size: 0.9rem;
+}
+.spec-item label {
+    width: 120px;
+    color: #777;
+    flex-shrink: 0;
+}
+.spec-item span {
+    color: #333;
+}
+
+.description-section p {
+    line-height: 1.6;
+    color: #555;
+}
+.spec-item-owner{
+    display: flex;
+    flex-direction: column;
+}
+.spec-item-owner .username{
+    font-weight: bold;
+}
+
+/* ... (semua style kamu yang lain) ... */
+
+/* Wrapper untuk menyejajarkan box nomor HP dan tombol copy */
+.contact-copy-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 1rem; /* Jarak antara box dan tombol */
+    margin-top: 1rem;
+}
+
+/* Box abu-abu untuk nomor HP (style lama kamu) */
+.contact-number-box {
+    flex-grow: 1; /* Membuat box ini mengisi sisa ruang */
+    text-align: center;
+    background: #42B28C;
+    padding: 1rem;
+    border-radius: 5px;
+    margin: 0; /* Hapus margin default dari h3 */
+    color: #ffffff;
+}
+
+/* Tombol Copy */
+.copy-button {
+    background-color: #ffffff;
+    color: #42B28C;
+    border: none;
+    border-radius: 4px;
+    padding: 0.5rem 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    flex-shrink: 0; /* Mencegah tombol menyusut */
+}
+
+.copy-button:hover {
+    background-color: ghostwhite;
+}
+
+.copy-button:disabled {
+    background-color: #28a745; /* Warna hijau saat 'Copied!' */
+    cursor: not-allowed;
+}
+
+/* Wrapper ini diperlukan agar tombol bisa diposisikan */
+.carousel-main {
+    position: relative;
+}
+
+/*!* Tombol panah di dalam carousel *!*/
+/*.carousel-button {*/
+/*    position: absolute;*/
+/*    top: 50%;*/
+/*    transform: translateY(-50%);*/
+/*    background-color: rgba(0, 0, 0, 0.5);*/
+/*    color: white;*/
+/*    border: none;*/
+/*    border-radius: 50%;*/
+/*    width: 40px;*/
+/*    height: 40px;*/
+/*    font-size: 1.5rem;*/
+/*    cursor: pointer;*/
+/*    transition: background-color 0.2s;*/
+/*    display: flex;*/
+/*    align-items: center;*/
+/*    justify-content: center;*/
+/*    padding-bottom: 4px; !* Menyesuaikan panah agar di tengah *!*/
+/*}*/
+
+.carousel-button-prev:hover {
+    background-color: rgba(255, 255, 255, 0.9);
+}
+.carousel-button-next:hover {
+    background-color: rgba(255, 255, 255, 0.9);
+}
+.carousel-button-prev:focus {
+    outline: none;
+}
+.carousel-button-next:focus {
+    outline: none;
+}
+.carousel-button-prev {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(255, 255, 255, 0.8);
+    color: #42B28C;
+    border: none;
+    width: 40px;
+    height: 40px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    left: 10px;
+    outline: none;
+}
+
+.carousel-button-next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(255, 255, 255, 0.8);
+    color: #42B28C;
+    border: none;
+    width: 40px;
+    height: 40px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    right: 10px;
+    outline: none;
+}
+
+/* Update style 'active' di thumbnail */
+.thumbnail.active {
+    border-color: #007bff; /* Warna biru (atau warna tema kamu) */
+    opacity: 1;
+}
+
+.thumbnail {
+    /* Pastikan ada border agar 'active' terlihat */
+    border: 2px solid transparent;
+    opacity: 0.7;
+}
+
+.thumbnail:hover {
+    opacity: 1;
+}

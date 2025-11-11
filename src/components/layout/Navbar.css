@@ -1,0 +1,147 @@
+/* src/components/layout/Navbar.css (SUDAH DIPERBAIKI) */
+
+.navbar {
+    display: flex;
+    justify-content: space-between; /* Ini akan menaruh: logo(kiri), search-bar(tengah), buttons(kanan) */
+    align-items: center;
+    padding: 1rem 2rem;
+    background-color: #3D4F61;
+    border-bottom: 1px solid #e0e0e0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.logo-image {
+    height: 5rem; /* Ini sudah benar */
+}
+
+/* Kosongkan search-bar untuk sekarang,
+   tapi kita beri 'flex-grow' agar dia mengisi ruang di tengah
+*/
+.search-bar {
+    flex-grow: 1;
+    padding: 0 2rem; /* Beri jarak agar tidak menempel */
+    /* Nanti kamu bisa isi dengan <input type="text" /> */
+}
+
+.button-group {
+    display: inline-flex;
+    gap: 1rem;
+}
+
+/* === INI YANG SAYA UBAH === */
+
+/* Saya ganti dari .navbar-links menjadi .navbar-buttons */
+.navbar-buttons {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem; /* 24px spacing between links */
+}
+
+/* Saya ganti dari .navbar-links a menjadi .navbar-buttons a */
+.navbar-buttons a {
+    text-decoration: none;
+    color: lightgray; /* Ganti warna jadi putih agar terlihat di background gelap */
+    font-weight: 500;
+    transition: color 0.2s ease-in-out;
+}
+.navbar-points {
+    margin-left: 0.5rem;
+    font-weight: 600;
+    color: #42B28C; /* Warna hijau tema kamu */
+}
+.navbar-buttons a:hover {
+    color: #42B28C; /* A blue hover color */
+}
+
+/* Saya ganti dari .navbar-links .admin-link */
+.navbar-buttons .admin-link {
+    color: #d9534f; /* Make the admin link stand out */
+    font-weight: bold;
+}
+
+/* Ganti warna teks agar terlihat */
+.navbar-welcome {
+    color: #eeeeee; /* Ganti warna jadi putih */
+    margin-right: -0.5rem;
+}
+
+/* Selector .navbar-logo a dan .logout-button tidak perlu diubah
+   karena sudah benar atau tidak terpakai
+*/
+
+.profile-menu-container {
+    position: relative; /* Ini adalah 'anchor' untuk dropdown */
+    display: inline-block;
+}
+
+/* 2. Tombol yang menampilkan nama user */
+.profile-menu-button {
+    background: none;
+    border: none;
+    color: #eee; /* Ganti jika tema kamu terang */
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    padding: 0.5rem;
+}
+.profile-menu-button:hover {
+    color: #fff;
+}
+
+/* 3. Box dropdown-nya */
+.profile-dropdown {
+    position: absolute;
+    top: 100%; /* Muncul tepat di bawah tombol */
+    right: 0; /* Rata kanan */
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    min-width: 160px; /* Lebar minimum */
+    z-index: 100; /* Pastikan di atas konten lain */
+    overflow: hidden; /* Agar item di dalamnya ikut bulat */
+}
+
+/* 4. Item di dalam dropdown (link & button) */
+.dropdown-item {
+    display: block;
+    width: 100%;
+    padding: 0.75rem 1.25rem;
+    text-align: left;
+    background: none;
+    border: none;
+    font-size: 0.95rem;
+    color: #333;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.dropdown-item:hover {
+    background-color: #f5f5f5;
+}
+
+.dropdown-item.logout {
+    color: #dc3545; /* Warna merah untuk logout */
+}
+
+
+.logout-modal-content {
+    padding: 1rem;
+    text-align: center;
+}
+
+.logout-modal-content p {
+    margin-bottom: 2rem;
+    font-size: 1rem;
+    color: #555;
+}
+
+.logout-modal-actions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.logout-modal-actions .btn {
+    padding: 0.6rem 1.5rem;
+}

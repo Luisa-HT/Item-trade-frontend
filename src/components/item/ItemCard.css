@@ -1,0 +1,65 @@
+/* src/components/item/ItemCard.css */
+
+/* We don't need .item-card styles anymore, Card.css handles it! */
+/* We just need to style the *contents* of the card */
+.item-card {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+
+    /* Tambahkan ini agar tidak nabrak di grid */
+    width: 100%;
+
+    /* Tambahkan ini untuk efek hover */
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.item-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+.card-link {
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.card-image-container {
+    width: 100%;
+    padding-top: 56.25%; /* 16:9 Aspect Ratio */
+    position: relative;
+    background-color: #f0f0f0;
+}
+
+.card-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* This class now adds the padding */
+.card-content {
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1; /* Pushes "View Details" to the bottom */
+}
+
+.card-title {
+    /* ... (styles are the same) ... */
+}
+.card-description {
+    font-weight: normal;
+    color: gray;
+}
+
+/* ... (etc) ... */

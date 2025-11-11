@@ -1,0 +1,46 @@
+/* src/pages/public/AuthPage.css */
+.auth-page-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 2rem 2rem; /* Jarak dari navbar */
+    min-height: 80vh;
+}
+
+.auth-card {
+    width: 100%;
+    max-width: 600px;
+    padding: 2rem; /* Card ini punya padding */
+    background-color: #000000; /* Sesuaikan dengan dark theme */
+}
+
+.auth-title {
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    color: #000000;
+}
+
+.auth-subtitle {
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    color: #000000;
+}
+
+.auth-footer {
+    text-align: center;
+    margin-top: 1.5rem;
+    font-size: 0.9rem;
+    color: #ccc;
+}
+
+.auth-footer a {
+    color: #64b5f6; /* Link warna biru muda */
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.auth-footer a:hover {
+    text-decoration: underline;
+}

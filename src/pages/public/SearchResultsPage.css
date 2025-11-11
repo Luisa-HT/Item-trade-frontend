@@ -1,0 +1,52 @@
+/* src/pages/public/SearchResultsPage.css */
+.page-with-sidebar {
+    display: flex;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.main-content-area {
+    flex: 1;
+    padding: 2rem;
+}
+
+.search-results-container {
+    /*max-width: 1200px;*/
+    /*margin: 2rem auto;*/
+    padding: 0 1.5rem;
+}
+
+.search-results-title {
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 1rem;
+    color: #333; /* Adjust for your theme */
+}
+
+.no-results-text {
+    font-size: 1.2rem;
+    color: #777;
+    text-align: center;
+    padding: 3rem 0;
+}
+.search-list.item-list {
+    /* Paksa grid untuk jadi 3 kolom,
+       tidak peduli berapa banyak item di dalamnya.
+    */
+    grid-template-columns: repeat(3, 1fr);
+}
+
+/* Jadikan responsif juga */
+@media (max-width: 900px) {
+    .search-list.item-list {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .search-list.item-list {
+        grid-template-columns: 1fr;
+    }
+}

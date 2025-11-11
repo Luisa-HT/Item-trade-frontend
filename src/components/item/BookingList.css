@@ -1,0 +1,22 @@
+/* src/components/booking/BookingList.css */
+.booking-list {
+    display: grid;
+    /* Kita pakai 2 kolom saja untuk booking,
+       tapi kamu bisa pakai 'auto-fit' seperti ItemList jika mau */
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+}
+
+.no-bookings-text {
+    text-align: left;
+    font-size: 1rem;
+    color: #666;
+    grid-column: 1 / -1;
+}
+
+/* Responsif */
+@media (max-width: 768px) {
+    .booking-list {
+        grid-template-columns: 1fr;
+    }
+}

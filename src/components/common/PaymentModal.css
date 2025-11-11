@@ -1,0 +1,28 @@
+/* src/components/common/PaymentModal.css */
+.payment-modal-content {
+    padding: 1rem;
+    color: #333;
+}
+
+.payment-summary {
+    font-size: 1.1rem;
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.dummy-payment-info {
+    background-color: #f0f0f0;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    padding: 1rem;
+    font-size: 0.9rem;
+    color: #555;
+    text-align: center;
+}
+
+.payment-modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 2rem;
+}

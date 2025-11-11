@@ -1,0 +1,23 @@
+/* src/components/item/ItemList.css */
+.item-list {
+    display: grid;
+
+    /* This is a responsive grid:
+      - It will automatically fit as many columns as it can.
+      - Each column will be at least 300px wide.
+      - It will stretch columns to fill any leftover space (1fr).
+    */
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+
+    gap: 1.5rem; /* 24px space between the cards */
+}
+
+.no-items-text {
+    text-align: center;
+    font-size: 1.1rem;
+    color: #999;
+
+    /* Make it span the entire grid area */
+    grid-column: 1 / -1;
+    padding: 3rem 0;
+}

@@ -1,0 +1,59 @@
+/* src/pages/public/HomePage.css */
+.page-with-sidebar {
+    display: flex;
+    max-width: 1400px; /* Buat lebih lebar dari 1200px */
+    margin: 0 auto;
+}
+
+.main-content-area {
+    flex: 1; /* Mengisi sisa ruang */
+    padding: 2rem;
+}
+
+.homepage-container {
+    /* This centers your grid of items */
+    /*max-width: 1200px;*/
+    /*margin: 0 auto;*/
+    padding: 2rem;
+}
+
+.homepage-title {
+    text-align: center;
+    font-size: 2.5rem;
+    color: #e0e0e0; /* Light color for dark theme */
+    margin-bottom: 0.5rem;
+}
+
+.homepage-subtitle {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #b0b0b0; /* Lighter gray */
+    margin-bottom: 2.5rem;
+}
+
+.loading-text {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #b0b0b0;
+    padding: 4rem 0;
+}
+
+.home-list.item-list {
+    /* Paksa grid untuk jadi 3 kolom,
+       tidak peduli berapa banyak item di dalamnya.
+    */
+    grid-template-columns: repeat(3, 1fr);
+}
+
+/* Jadikan responsif juga */
+@media (max-width: 900px) {
+    .home-list.item-list {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .home-list.item-list {
+        grid-template-columns: 1fr;
+    }
+}

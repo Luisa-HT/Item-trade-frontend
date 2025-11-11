@@ -1,0 +1,67 @@
+/* src/pages/user/BuyPointsPage.css */
+.buy-points-container {
+    max-width: 900px;
+    margin: 2rem auto;
+    padding: 0 1.5rem;
+    color: #333; /* Ganti jika tema gelap */
+}
+
+.buy-points-container h1 {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.current-balance-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 2rem;
+    background-color: #f9f9f9;
+    border: 1px solid #eee;
+    border-radius: 8px;
+}
+
+.balance-label {
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: #555;
+}
+
+.balance-amount {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #42B28C; /* Warna tema kamu */
+}
+
+.buy-points-info {
+    text-align: center;
+    color: #777;
+    margin: 1.5rem 0;
+}
+
+.package-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.package-card {
+    padding: 2rem;
+    text-align: center;
+    outline: #42B28C solid 2px;
+    border-radius: 8px;
+
+}
+
+.package-card h2 {
+    margin-top: 0;
+    font-size: 1.8rem;
+}
+
+.package-price {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #42B28C;
+    margin: 1rem 0 2rem 0;
+}
