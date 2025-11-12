@@ -13,7 +13,7 @@ const AdminDashboardPage = () => {
         try {
             setIsLoading(true);
             const response = await getPendingItems();
-            setPendingItems(response.data.data || []); // Asumsi datanya di .data
+            setPendingItems(response.data || []); // Asumsi datanya di .data
         } catch (err) {
             console.error('Gagal mengambil pending items:', err);
         } finally {

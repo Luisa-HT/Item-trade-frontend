@@ -9,13 +9,17 @@ import './ItemList.css'; // We'll create this next
  * @param {Object} props
  * @param {Array} props.items - The array of item objects to render.
  */
-const ItemList = ({ items, className = '' }) => {    return (
+const ItemList = ({ items, className = '' , showStatus= false}) => {    return (
         <div className={`item-list ${className}`.trim()}>
             {items.length === 0 ? (
                 <p className="no-items-text">No items found.</p>
             ) : (
                 items.map(item => (
-                    <ItemCard key={item.id} item={item} />
+                    <ItemCard
+                        key={item.id}
+                        item={item}
+                        showStatus={showStatus}
+                    />
                 ))
             )}
         </div>

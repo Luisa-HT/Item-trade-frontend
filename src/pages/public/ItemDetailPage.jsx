@@ -45,7 +45,7 @@ const ItemDetailPage = () => {
 
     const handleBookingClick = async () => {
         if (!isAuthenticated) {
-            alert('Kamu harus login untuk melihat info kontak pemilik.');
+            alert('Kamu harus login untuk melakukan booking.');
             return;
         }
         // Hanya buka modal konfirmasi request
@@ -209,6 +209,10 @@ const ItemDetailPage = () => {
                     <div className="description-section">
                         <h3>Deskripsi Produk</h3>
                         <p>{item.description}</p>
+                    </div>
+                    <div className="description-section">
+                        <h3>Request</h3>
+                        <span>{item.request || 'Tidak Ada'}</span>
                     </div>
 
                     {/* 4. Tombol Aksi ada di dalam .detail-info-section */}

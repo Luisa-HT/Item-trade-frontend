@@ -1,39 +1,53 @@
+// src/components/item/ItemCard.jsx
 import React from "react";
 import {Link} from "react-router-dom";
-// import Card from "../../components/common/Card.jsx";
 import PlaceHolderImage from "../../assets/placeholder.jpg";
 import './ItemCard.css';
 
-const ItemCard = ({item}) => {
+// Fungsi helper untuk status
+const getStatus = (isApproved) => {
+    if (isApproved === true) {
+        return { text: 'Approved', class: 'status-approved' };
+    }
+    // 'false', 'null', dan 'undefined' semuanya adalah Pending
+    return { text: 'Pending', class: 'status-pending' };
+}
+
+const ItemCard = ({item, showStatus = false}) => {
     const id = item?.id;
     const name = item?.name || 'Nama Tidak Tersedia';
     const description = item?.description || 'Deskripsi tidak tersedia.';
+
+    // Logika URL Gambar yang sudah diperbaiki
     const images = item?.media || [];
     const BACKEND_URL = 'https://server.welazure.dev';
     const primaryImage = images.find(img => img.isPrimary) || images[0];
     const imagePath = primaryImage?.filePath;
     const imageUrl = imagePath ? (BACKEND_URL + imagePath) : PlaceHolderImage;
-    console.log(imageUrl,'imageUrl');
 
-    // Jika item tidak punya ID, kita tidak bisa menampilkannya.
-    // Ini mencegah error "key" dan "link"
+    // Logika Status yang sudah diperbaiki (aman ESLint)
+    const hasStatus = 'isApproved' in item;
+    const status = hasStatus ? getStatus(item.isApproved) : null;
+
     if (!id) {
-        return null; // Jangan render apa-apa
+        return null; // Jangan render apa-apa jika tidak ada ID
     }
 
     return (
-        // <Card className="itemCard">
         <div className="item-card">
-            <Link to={`/item/${item.id}`} className="card-link">
-
-                {/* This image part has NO padding, which is what we want */}
-                <div className="card-image-container">
-                    <img src={imageUrl} alt={item.name} className="card-image"/>
+            {/* Tampilkan badge HANYA jika showStatus true */}
+            {showStatus && status && (
+                <div className={`card-status-badge ${status.class}`}>
+                    {status.text}
                 </div>
+            )}
 
-                {/* This content part adds its OWN padding */}
+            <Link to={`/item/${item.id}`} className="card-link">
+                <div className="card-image-container">
+                    <img src={imageUrl} alt={name} className="card-image"/>
+                </div>
                 <div className="card-content">
-                    <h3 className="card-title">{item.name}</h3>
+                    <h3 className="card-title">{name}</h3>
                     <p className="card-description">
                         {description.length > 100
                             ? `${description.substring(0, 100)}...`
@@ -42,9 +56,8 @@ const ItemCard = ({item}) => {
                     <span className="card-view-details">View Details</span>
                 </div>
             </Link>
-        {/*</Card>*/}
         </div>
     );
-
 };
+
 export default ItemCard;

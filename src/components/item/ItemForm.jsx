@@ -1,6 +1,6 @@
 // src/components/item/ItemForm.jsx
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 import { createItem } from '../../services/itemService';
 import {uploadMedia} from "../../services/mediaService.js";
 import Button from '../common/Button';
@@ -28,7 +28,7 @@ const ItemForm = () => {
     const [selectedFiles, setSelectedFiles] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -62,7 +62,7 @@ const ItemForm = () => {
             }
 
             alert('Barang berhasil di-post! Menunggu persetujuan admin.');
-            navigate('/dashboard');
+            window.location.href = '/dashboard';
 
         } catch (err) {
             console.error('Gagal memposting item:', err);
@@ -116,12 +116,12 @@ const ItemForm = () => {
             </div>
 
             <div className="form-group">
-                <label htmlFor="request">Pesan untuk Admin (Request Approval)</label>
+                <label htmlFor="request">Request Barang yang Diinginkan</label>
                 <textarea
                     id="request"
                     name="request"
                     rows="3"
-                    placeholder="Contoh: Tolong approve, barang ini original."
+                    placeholder="Contoh: Samsung S21 + 1 juta Rupiah"
                     value={formData.request}
                     onChange={handleChange}
                 />

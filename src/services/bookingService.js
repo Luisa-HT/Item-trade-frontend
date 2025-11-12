@@ -13,7 +13,7 @@ export const getMyBookings = async () => {
 }
 
 export const createBooking = async (itemId, bookingData) => {
-    return api.post(`/Booking/item/${itemId}`, bookingData);
+    return api.post(`/Booking/${itemId}`, bookingData);
 }
 export const cancelBooking = async (id) => {
     return api.put(`/Booking/${id}/cancel`);

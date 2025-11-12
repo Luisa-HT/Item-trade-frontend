@@ -100,3 +100,28 @@
 .cancel-button {
     margin: 32px 0 16px;
 }
+/* src/pages/user/UserDashboardPage.css */
+
+/* ... (style kamu yang sudah ada) ... */
+
+/* --- INI DIA PERBAIKANNYA --- */
+
+/* 1. Atur .request-info agar menumpuk (stack) */
+.booking-item .request-info {
+    display: flex;
+    flex-direction: column; /* Ini adalah kuncinya: atas-bawah */
+    gap: 0.25rem; /* Jarak kecil antara judul dan subjudul */
+}
+
+/* 2. Beri style pada nama item (Judul) */
+.booking-item .request-info strong {
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: #333; /* Ganti jika tema gelap */
+}
+
+/* 3. Beri style pada 'Dari: ...' (Subjudul) */
+.booking-item .request-info span {
+    font-size: 0.9rem;
+    color: #555; /* Ganti jika tema gelap */
+}

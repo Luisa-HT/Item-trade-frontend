@@ -1,8 +1,7 @@
 /* src/components/item/ItemCard.css */
 
-/* We don't need .item-card styles anymore, Card.css handles it! */
-/* We just need to style the *contents* of the card */
 .item-card {
+    width: 100%;
     background-color: #ffffff;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -10,18 +9,15 @@
     display: flex;
     flex-direction: column;
     height: 100%;
-
-    /* Tambahkan ini agar tidak nabrak di grid */
-    width: 100%;
-
-    /* Tambahkan ini untuk efek hover */
     transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    position: relative; /* Diperlukan untuk status badge */
 }
 
 .item-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
+
 .card-link {
     text-decoration: none;
     color: inherit;
@@ -46,20 +42,67 @@
     object-fit: cover;
 }
 
-/* This class now adds the padding */
 .card-content {
     padding: 1rem;
     display: flex;
     flex-direction: column;
-    flex-grow: 1; /* Pushes "View Details" to the bottom */
+    flex-grow: 1;
 }
 
 .card-title {
-    /* ... (styles are the same) ... */
-}
-.card-description {
-    font-weight: normal;
-    color: gray;
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 0 0 0.5rem 0;
+    color: #333;
 }
 
-/* ... (etc) ... */
+.card-description {
+    font-size: 0.9rem;
+    color: #666;
+    margin: 0 0 1rem 0;
+    line-height: 1.4;
+    flex-grow: 1;
+}
+
+.card-view-details {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #007bff;
+    align-self: flex-start;
+}
+
+.card-link:hover .card-view-details {
+    text-decoration: underline;
+}
+
+/* Style untuk Status Badge */
+.card-status-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    padding: 0.25rem 0.6rem;
+    border-radius: 4px; /* Sedikit lebih kotak seperti di gambar */
+    font-size: 0.8rem;
+    font-weight: 600;
+    z-index: 5;
+
+    /* Style border 1px */
+    border: 1px solid;
+}
+
+/* Style untuk tag "Approved" (Hijau) */
+.card-status-badge.status-approved {
+    background-color: #f6ffed; /* Background hijau muda */
+    border-color: #b7eb8f; /* Border hijau */
+    color: #52c41a; /* Teks hijau tua */
+}
+
+/* Style untuk tag "Pending" (Kuning) */
+.card-status-badge.status-pending {
+    background-color: #fffbe6; /* Background kuning muda */
+    border-color: #ffe58f; /* Border kuning */
+    color: #faad14; /* Teks kuning tua */
+}
+.card-status-badge.status-rejected {
+    background-color: #dc3545; /* Merah */
+}
