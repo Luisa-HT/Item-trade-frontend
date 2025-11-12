@@ -3,21 +3,27 @@ import {getItems} from "../../services/itemService.js";
 import './HomePage.css';
 import ItemList from "../../components/item/ItemList.jsx";
 import CategorySidebar from "../../components/common/CategorySidebar.jsx";
+import Button from "../../components/common/Button.jsx";
 
 function HomePage() {
     const [items, setItems] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [selectedCategoryId, setSelectedCategoryId] = useState(null); // 'null' = Semua
+    const [currentPage, setCurrentPage] = useState(1); // Mulai dari halaman 1
+    const [totalPages, setTotalPages] = useState(0); // Didapat dari API
 
     useEffect(() => {
         const fetchItems = async () => {
             try {
-                setIsLoading(true); // Set loading setiap kali filter berubah
+                setIsLoading(true);
 
-                // Teruskan ID kategori ke service
-                const response = await getItems(selectedCategoryId);
+                // Teruskan ID kategori DAN halaman saat ini
+                const response = await getItems(selectedCategoryId, currentPage);
 
+                // Asumsi API mengembalikan data seperti ini
                 setItems(response.data.data || []);
+                setTotalPages(response.data.totalPages || 0); // Simpan total halaman
+
             } catch (error) {
                 console.error('Failed to fetch items:', error);
             } finally {
@@ -26,7 +32,21 @@ function HomePage() {
         };
 
         fetchItems();
-    }, [selectedCategoryId]);// The empty [] means this runs only once
+    }, [selectedCategoryId, currentPage]);// The empty [] means this runs only once
+
+    const handleCategorySelect = (categoryId) => {
+        setSelectedCategoryId(categoryId);
+        setCurrentPage(1); // Selalu reset ke halaman 1 saat ganti kategori
+    };
+
+    // 👇 6. FUNGSI BARU UNTUK NAVIGASI HALAMAN
+    const handlePrevPage = () => {
+        setCurrentPage(prev => Math.max(prev - 1, 1)); // Tidak boleh kurang dari 1
+    };
+
+    const handleNextPage = () => {
+        setCurrentPage(prev => Math.min(prev + 1, totalPages)); // Tidak boleh lebih dari total
+    };
 
     return (
         <div className="page-with-sidebar">
@@ -34,7 +54,7 @@ function HomePage() {
             {/* Kolom Kiri: Sidebar */}
             <CategorySidebar
                 selectedCategoryId={selectedCategoryId}
-                onCategorySelect={setSelectedCategoryId} // Kirim fungsi set state
+                onCategorySelect={handleCategorySelect} // Kirim fungsi set state
             />
 
             {/* Kolom Kanan: Konten Utama */}
@@ -45,11 +65,33 @@ function HomePage() {
                 {isLoading ? (
                     <div className="loading-text">Loading items...</div>
                 ) : (
+                    <>
                     <ItemList items={items} className="home-list" />
-                )}
-            </div>
+                {totalPages > 1 && (
+                    <div className="pagination-footer">
+                    <Button
+                    onClick={handlePrevPage}
+                disabled={currentPage === 1}
+                variant="secondary"
+            >
+                &lt; Previous
+            </Button>
+            <span>
+                  Page {currentPage} of {totalPages}
+                </span>
+            <Button
+                onClick={handleNextPage}
+                disabled={currentPage === totalPages}
+                variant="secondary"
+            >
+                Next &gt;
+            </Button>
         </div>
-    );
+    )}
+</>
+)}
+</div>
+</div>
+);
 }
-
 export default HomePage;

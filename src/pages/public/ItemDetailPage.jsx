@@ -195,10 +195,20 @@ const ItemDetailPage = () => {
                     {/* Tombol Aksi */}
                     <div className="action-button">
                         {isOwner ? (
-                            // Jika user adalah PEMILIK
-                            <Button variant="danger" onClick={handleDelete}>
-                                Hapus Item Ini
-                            </Button>
+                            <div className="owner-actions">
+                                <Button
+                                    variant="secondary"
+                                    onClick={() => navigate(`/item/edit/${id}`)}
+                                >
+                                    Edit Item
+                                </Button>
+                                <Button
+                                    variant="danger"
+                                    onClick={handleDelete}
+                                >
+                                    Hapus Item Ini
+                                </Button>
+                            </div>
                         ) : (
                             // Jika user BUKAN pemilik
                             <Button variant="primary" onClick={handleBooking}>
@@ -208,40 +218,6 @@ const ItemDetailPage = () => {
                     </div>
                 </div>
             </div>
-
-            {/* Bagian Bawah: Spesifikasi & Deskripsi */}
-            {/*<div className="detail-bottom-section">*/}
-            {/*    <div className="specs-section">*/}
-            {/*        <h3>Spesifikasi Produk</h3>*/}
-            {/*        <div className="specs-grid">*/}
-            {/*            <div className="spec-item">*/}
-            {/*                <label>Kategori</label>*/}
-            {/*                <span>{item.category?.name || 'Tidak ada'}</span>*/}
-            {/*            </div>*/}
-            {/*            <div className="spec-item">*/}
-            {/*                <label>Pemilik</label>*/}
-            {/*                <div className="spec-item-owner">*/}
-            {/*                <span className="username">{item.user?.username || 'Tidak ada'}*/}
-            {/*                </span>*/}
-            {/*                /!*<span>*!/*/}
-            {/*                /!*    {item.user?.phoneNumber || 'Tidak ada'}*!/*/}
-            {/*                /!*</span>*!/*/}
-            {/*                </div>*/}
-
-            {/*            </div>*/}
-            {/*            <div className="spec-item">*/}
-            {/*                <label>Status</label>*/}
-            {/*                <span>{item.status || 'Tersedia'}</span>*/}
-            {/*            </div>*/}
-            {/*            /!* Tambahkan spesifikasi lain dari API kamu di sini *!/*/}
-            {/*        </div>*/}
-            {/*    </div>*/}
-
-            {/*    <div className="description-section">*/}
-            {/*        <h3>Deskripsi Produk</h3>*/}
-            {/*        <p>{item.description}</p>*/}
-            {/*    </div>*/}
-            {/*</div>*/}
             <Modal
                 isOpen={isModalOpen}
                 onClose={() => {
@@ -249,7 +225,7 @@ const ItemDetailPage = () => {
                     setIsCopied(false); // Reset tombol copy saat modal ditutup
                 }}
             >
-                <div>
+                <div className="modal-content-booking">
                     <h2 style={{ marginTop: 0 }}>Hubungi Pemilik</h2>
                     <p>Permintaan booking telah dikirim ke pemilik.</p>
                     <p>Silakan hubungi pemilik langsung di:</p>

@@ -1,0 +1,60 @@
+/* src/pages/admin/AdminDashboardPage.css */
+.admin-container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1.5rem;
+    color: #333; /* Ganti jika tema gelap */
+}
+
+.admin-container h1 {
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 1rem;
+    margin-bottom: 2rem;
+}
+
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    background-color: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.admin-table th,
+.admin-table td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+.admin-table th {
+    background-color: #f9f9f9;
+    font-weight: 600;
+}
+
+.admin-table tbody tr:hover {
+    background-color: #f5f5f5;
+}
+
+.admin-table .request-message {
+    font-style: italic;
+    color: #555;
+    max-width: 300px;
+}
+
+.admin-table .action-buttons {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.admin-table .action-buttons .btn {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.9rem;
+}
+
+.admin-table .no-items {
+    text-align: center;
+    padding: 2rem;
+    color: #777;
+}

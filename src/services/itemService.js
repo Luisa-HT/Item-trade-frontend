@@ -33,8 +33,11 @@ export const getItemCategories = async () => {
  * GET /api/item
  * Mengambil item, BISA difilter berdasarkan categoryId.
  */
-export const getItems = (categoryId) => {
-    const params = {};
+export const getItems = (categoryId, page) => {
+    const params = {
+        page: page || 1, // Default ke halaman 1 jika tidak disediakan
+        pageSize: 9,
+    };
     if (categoryId) {
         params.categoryId = categoryId; // Tambahkan ke params HANYA jika ada
     }
@@ -46,9 +49,11 @@ export const getItems = (categoryId) => {
  * GET /api/item?searchTerm={query}&categoryId={id}
  * Mencari item, BISA difilter berdasarkan categoryId.
  */
-export const searchItems = (query, categoryId) => {
+export const searchItems = (query, categoryId, page) => {
     const params = {
-        searchTerm: query
+        searchTerm: query,
+        page: page || 1,
+        pageSize: 9,
     };
     if (categoryId) {
         params.categoryId = categoryId;
@@ -57,4 +62,6 @@ export const searchItems = (query, categoryId) => {
     return api.get('/item', { params });
 };
 
-// ... (fungsi lain seperti getItemById, createItem, dll.) ...
+export const updateItem = async (id, itemData) => {
+    return api.put(`/Item/${id}`, itemData);
+}

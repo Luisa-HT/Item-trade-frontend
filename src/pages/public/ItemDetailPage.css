@@ -306,3 +306,14 @@
 .thumbnail:hover {
     opacity: 1;
 }
+.modal-content-booking { /* Ini adalah class yang saya asumsikan untuk isi modal booking kamu */
+    max-width: 550px; /* Sesuaikan lebar modal agar form di dalamnya pas */
+    width: 90%; /* Agar responsif */
+    padding: 2rem; /* Beri padding agar tidak terlalu mepet */
+}
+
+.modal-content-booking .form-group input,
+.modal-content-booking .form-group textarea {
+    width: 100%;
+    box-sizing: border-box;
+}

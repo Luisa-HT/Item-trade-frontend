@@ -12,6 +12,9 @@ import PostItemPage from "../pages/user/PostItemPage.jsx";
 import ProfilePage from "../pages/user/ProfilePage.jsx";
 import SearchResultsPage from "../pages/public/SearchResultsPage.jsx";
 import BuyPointsPage from "../pages/user/BuyPointsPage.jsx";
+import AdminRoute from "./AdminRoutes.jsx";
+import AdminDashboardPage from "../pages/admin/AdminDashboardPage.jsx";
+import EditItemPage from "../pages/user/EditItemPage.jsx";
 
 export const AppRoutes = () => {
     return (
@@ -32,8 +35,13 @@ export const AppRoutes = () => {
                 <Route path="/post-item" element={<PostItemPage />} />
                 <Route path="/profile" element={<ProfilePage />} />
                 <Route path="/points" element={<BuyPointsPage />} />
+                <Route path="/item/edit/:id" element={<EditItemPage />} />
                 {/* <Route path="/post-item" element={<PostItemPage />} /> */}
                 {/* <Route path="/profile" element={<ProfilePage />} /> */}
+            </Route>
+
+            <Route element={<AdminRoute />}>
+                <Route path="/admin" element={<AdminDashboardPage />} />
             </Route>
 
         </Routes>
