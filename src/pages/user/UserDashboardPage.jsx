@@ -55,6 +55,24 @@ const UserDashboardPage = () => {
             alert('Gagal membatalkan booking.');
         }
     };
+    const handleRejectRequest = async (bookingId) => {
+        if (!window.confirm('Yakin ingin menolak request booking ini?')) {
+            return;
+        }
+        try {
+            // Kita pakai ulang API 'cancelBooking'
+            await cancelBooking(bookingId);
+            alert('Request booking ditolak.');
+
+            // Refresh data myItems agar booking yg ditolak hilang dari array 'item.bookings'
+            const itemsResponse = await getMyItems();
+            setMyItems(itemsResponse.data || []);
+
+        } catch (err) {
+            console.error('Gagal menolak booking:', err);
+            alert('Gagal menolak booking.');
+        }
+    };
 
     // Kita TIDAK PERLU fungsi 'handleRejectRequest' terpisah lagi
     // karena 'item.bookings' masih 'null'
@@ -69,8 +87,6 @@ const UserDashboardPage = () => {
         return [];
     });
 
-
-    // --- 👇 INI LOGIKA FILTER YANG DIUBAH 👇 ---
     const pendingItems = myItems.filter(item =>
         item.isApproved === false // 'false' adalah 'Pending'
     );
@@ -158,7 +174,18 @@ const UserDashboardPage = () => {
                     <p>Tidak ada permintaan booking untuk barang-barangmu.</p>
                 ) : (
                     <ul className="booking-list request-list">
-                        {/* ... (Logika map ini aman, karena array-nya kosong) ... */}
+                        {bookingRequests.map(req => (
+                            <li key={req.id} className="booking-item">
+                                <div className="request-info">
+                                    <strong>{req.itemName}</strong>
+                                    {/* Asumsi 'booker' ada di dalam data 'req' */}
+                                    <span>Dari: {req.user?.username || 'User Tidak Dikenal'}</span>
+                                </div>
+                                <Button variant="danger" onClick={() => handleRejectRequest(req.id)}>
+                                    Reject
+                                </Button>
+                            </li>
+                        ))}
                     </ul>
                 )}
             </div>
