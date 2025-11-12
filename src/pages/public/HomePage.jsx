@@ -36,12 +36,11 @@ function HomePage() {
 
     const handleCategorySelect = (categoryId) => {
         setSelectedCategoryId(categoryId);
-        setCurrentPage(1); // Selalu reset ke halaman 1 saat ganti kategori
+        setCurrentPage(1);
     };
 
-    // 👇 6. FUNGSI BARU UNTUK NAVIGASI HALAMAN
     const handlePrevPage = () => {
-        setCurrentPage(prev => Math.max(prev - 1, 1)); // Tidak boleh kurang dari 1
+        setCurrentPage(prev => Math.max(prev - 1, 1));
     };
 
     const handleNextPage = () => {
@@ -57,10 +56,7 @@ function HomePage() {
                 onCategorySelect={handleCategorySelect} // Kirim fungsi set state
             />
 
-            {/* Kolom Kanan: Konten Utama */}
             <div className="main-content-area">
-                {/*<h1 className="homepage-title">Welcome to Tuker.in</h1>*/}
-                {/*<p className="homepage-subtitle">Browse and trade items with other users</p>*/}
 
                 {isLoading ? (
                     <div className="loading-text">Loading items...</div>
