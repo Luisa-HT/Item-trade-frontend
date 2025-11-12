@@ -2,31 +2,32 @@
 import React, { useState, useEffect } from 'react';
 import { getPendingItems, approveItem, rejectItem } from '../../services/adminService';
 import Button from '../../components/common/Button';
-import './AdminDashboardPage.css'; // Kita akan buat file ini
+import { useNavigate } from 'react-router-dom'; // <-- 1. Pastikan ini di-import
+import './AdminDashboardPage.css';
 
 const AdminDashboardPage = () => {
     const [pendingItems, setPendingItems] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+    const navigate = useNavigate(); // <-- 2. Panggil hook-nya
 
-    // Fungsi untuk mengambil data
-    const fetchPending = async () => {
-        try {
-            setIsLoading(true);
-            const response = await getPendingItems();
-            setPendingItems(response.data || []); // Asumsi datanya di .data
-        } catch (err) {
-            console.error('Gagal mengambil pending items:', err);
-        } finally {
-            setIsLoading(false);
-        }
-    };
-
-    // Ambil data saat halaman di-load
+    // Fungsi untuk mengambil data (sudah benar)
     useEffect(() => {
+        const fetchPending = async () => {
+            try {
+                setIsLoading(true);
+                const response = await getPendingItems();
+                // Logika baru kamu: 'isApproved: false' adalah pending
+                setPendingItems(response.data.filter(item => item.isApproved === false) || []);
+            } catch (err) {
+                console.error('Gagal mengambil pending items:', err);
+            } finally {
+                setIsLoading(false);
+            }
+        };
         fetchPending();
     }, []);
 
-    // Handler untuk tombol
+    // 👇 3. KEMBALIKAN FUNGSI HANDLER INI
     const handleApprove = async (id) => {
         try {
             await approveItem(id);
@@ -78,11 +79,25 @@ const AdminDashboardPage = () => {
                             <td>{item.name}</td>
                             <td>{item.user?.username || 'User Tidak Dikenal'}</td>
                             <td className="request-message">{item.request}</td>
+
+                            {/* 👇 4. UBAH KOLOM AKSI MENJADI SEPERTI INI (3 TOMBOL) 👇 */}
                             <td className="action-buttons">
-                                <Button variant="primary" onClick={() => handleApprove(item.id)}>
+                                <Button
+                                    variant="secondary"
+                                    onClick={() => navigate(`/item/${item.id}`)}
+                                >
+                                    Details
+                                </Button>
+                                <Button
+                                    variant="primary"
+                                    onClick={() => handleApprove(item.id)}
+                                >
                                     Approve
                                 </Button>
-                                <Button variant="danger" onClick={() => handleReject(item.id)}>
+                                <Button
+                                    variant="danger"
+                                    onClick={() => handleReject(item.id)}
+                                >
                                     Reject
                                 </Button>
                             </td>

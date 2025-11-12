@@ -8,6 +8,8 @@ import Button from '../../components/common/Button';
 import Modal from '../../components/common/Modal';
 import PlaceholderImage from '../../assets/placeholder.jpg';
 import './ItemDetailPage.css';
+import { approveItem, rejectItem } from '../../services/adminService';
+
 
 const ItemDetailPage = () => {
     const { id } = useParams(); // Mengambil 'id' dari URL (misal: /item/123)
@@ -42,6 +44,29 @@ const ItemDetailPage = () => {
         fetchItem();
     }, [id]); // Ambil data lagi jika ID di URL berubah
 
+    const handleApprove = async () => {
+        try {
+            await approveItem(id);
+            alert('Item disetujui!');
+            navigate('/admin'); // Kembalikan admin ke dashboard-nya
+        } catch (err) {
+            console.error('Gagal approve:', err);
+            alert('Gagal approve.');
+        }
+    };
+
+    const handleReject = async () => {
+        if (window.confirm('Yakin ingin menolak (menghapus) item ini?')) {
+            try {
+                await rejectItem(id);
+                alert('Item ditolak dan dihapus.');
+                navigate('/admin'); // Kembalikan admin ke dashboard-nya
+            } catch (err) {
+                console.error('Gagal reject:', err);
+                alert('Gagal reject.');
+            }
+        }
+    };
 
     const handleBookingClick = async () => {
         if (!isAuthenticated) {
@@ -131,6 +156,8 @@ const ItemDetailPage = () => {
         }
     };
     const isOwner = user?.id === item?.user?.id;
+    const isAdmin = user && (user.role === 'Admin' || user.role === 0);
+    const isPending = item?.isApproved === false; // 'false' = pending
 
     return (
         <div className="detail-page-container">
@@ -172,7 +199,6 @@ const ItemDetailPage = () => {
                     )}
                 </div>
                 {/* Kolom Kanan: Info & Aksi */}
-                {/* Kolom Kanan: Info & Aksi */}
                 <div className="detail-info-section">
 
                     {/* 1. Judul ada di dalam .detail-info-section */}
@@ -201,6 +227,10 @@ const ItemDetailPage = () => {
                                     <label>Request</label>
                                     <span>{item.request || 'Tidak Ada'}</span>
                                 </div>
+                                <div className="spec-item">
+                                    <label>Address</label>
+                                    <span>{item.user?.address || 'Tidak Ada'}</span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -217,31 +247,42 @@ const ItemDetailPage = () => {
 
                     {/* 4. Tombol Aksi ada di dalam .detail-info-section */}
                     <div className="action-button">
-                        {isOwner ? (
+
+                        {isAdmin && isPending ? (
+                            // 1. Tampilan untuk ADMIN (saat item PENDING)
+                            // KITA CEK INI PERTAMA!
+                            <div className="admin-actions">
+                                <Button variant="primary" onClick={handleApprove}>
+                                    Approve
+                                </Button>
+                                <Button variant="danger" onClick={handleReject}>
+                                    Reject
+                                </Button>
+                            </div>
+                        ) : isOwner ? (
+                            // 2. Tampilan untuk PEMILIK BARANG (jika BUKAN admin & pending)
                             <div className="owner-actions">
-                                <Button
-                                    variant="secondary"
-                                    onClick={() => navigate(`/item/edit/${id}`)}
-                                >
+                                <Button variant="secondary" onClick={() => navigate(`/item/edit/${id}`)}>
                                     Edit Item
                                 </Button>
-                                <Button
-                                    variant="danger"
-                                    onClick={handleDelete}
-                                >
+                                <Button variant="danger" onClick={handleDelete}>
                                     Hapus Item Ini
                                 </Button>
                             </div>
                         ) : (
-                            <Button variant="primary" onClick={handleBookingClick}>
-                                Ajukan Penukaran
-                            </Button>
+                            // 3. Tampilan untuk USER LAIN (publik)
+                            item.isApproved === true ? (
+                                <Button variant="primary" onClick={handleBookingClick}>
+                                    Ajukan Penukaran
+                                </Button>
+                            ) : (
+                                <p className="pending-notice">Item ini sedang menunggu persetujuan.</p>
+                            )
                         )}
-                    </div>
+                    </div> {/* <-- Akhir dari .action-button */}
 
-                </div> {/* <-- Div penutup untuk .detail-info-section HARUS DI SINI */}
-
-            </div> {/* <-- Div penutup untuk .detail-top-section */}
+                </div> {/* <-- Akhir dari .detail-info-section */}
+            </div> {/* <-- Akhir dari .detail-top-section */}
             <Modal isOpen={isRequestModalOpen} onClose={() => setIsRequestModalOpen(false)}>
                 <div className="request-modal-content">
                     <h2 style={{ marginTop: 0 }}>Konfirmasi Penukaran</h2>

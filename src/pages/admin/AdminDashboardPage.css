@@ -43,9 +43,18 @@
     max-width: 300px;
 }
 
+.admin-table .no-items {
+    text-align: center;
+    padding: 2rem;
+    color: #777;
+}
+/* ... (style lain) ... */
+
 .admin-table .action-buttons {
     display: flex;
     gap: 0.5rem;
+    /* Mencegah tombol turun baris jika kolom terlalu sempit */
+    white-space: nowrap;
 }
 
 .admin-table .action-buttons .btn {
@@ -53,8 +62,4 @@
     font-size: 0.9rem;
 }
 
-.admin-table .no-items {
-    text-align: center;
-    padding: 2rem;
-    color: #777;
-}
+/* ... */
