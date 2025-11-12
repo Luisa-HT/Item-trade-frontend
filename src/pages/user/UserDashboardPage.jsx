@@ -16,6 +16,7 @@ const UserDashboardPage = () => {
     const [myBookings, setMyBookings] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [currentPage, setCurrentPage] = useState(0);
+    const [pendingCurrentPage, setPendingCurrentPage] = useState(0);
     const [selectedBooking, setSelectedBooking] = useState(null);
 
     // ... (useEffect dan handleCancel tetap sama) ...
@@ -89,6 +90,20 @@ const UserDashboardPage = () => {
     const handlePrevPage = () => { if (canGoPrev) { setCurrentPage(prev => prev - 1); } };
     const handleNextPage = () => { if (canGoNext) { setCurrentPage(prev => prev + 1); } };
     // -----------------------------------------------
+    const pendingStartIndex = pendingCurrentPage * PAGE_SIZE;
+    const pendingEndIndex = pendingStartIndex + PAGE_SIZE;
+    const pendingDisplayedItems = pendingItems.slice(pendingStartIndex, pendingEndIndex);
+
+    const pendingTotalPages = Math.ceil(pendingItems.length / PAGE_SIZE);
+    const pendingCanGoPrev = pendingCurrentPage > 0;
+    const pendingCanGoNext = pendingEndIndex < pendingItems.length;
+
+    const handlePendingPrevPage = () => {
+        if (pendingCanGoPrev) { setPendingCurrentPage(prev => prev - 1); }
+    };
+    const handlePendingNextPage = () => {
+        if (pendingCanGoNext) { setPendingCurrentPage(prev => prev + 1); }
+    };
 
     if (isLoading) {
         return <div className="loading-text">Loading Dashboard...</div>;
@@ -100,9 +115,18 @@ const UserDashboardPage = () => {
 
             {/* 1. SECTION PENDING (Filter baru) */}
             <div className="dashboard-section">
+                <div className="section-header">
                 <h2>Barang Menunggu Persetujuan</h2>
+                {pendingItems.length > PAGE_SIZE && (
+                    <div className="pagination-controls">
+                        <Button onClick={handlePendingPrevPage} disabled={!pendingCanGoPrev} variant="primary">&lt;</Button>
+                        <span>{pendingCurrentPage + 1} / {pendingTotalPages}</span>
+                        <Button onClick={handlePendingNextPage} disabled={!pendingCanGoNext} variant="primary">&gt;</Button>
+                    </div>
+                )}
+            </div>
                 {pendingItems.length > 0 ? (
-                    <ItemList items={pendingItems} className="dashboard-list" showStatus={true} />
+                    <ItemList items={pendingDisplayedItems} className="dashboard-list" showStatus={true} />
                 ) : (
                     <p>Tidak ada barang yang menunggu persetujuan.</p>
                 )}
