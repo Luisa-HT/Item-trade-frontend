@@ -13,9 +13,11 @@ const ItemDetailPage = () => {
     const { id } = useParams(); // Mengambil 'id' dari URL (misal: /item/123)
     const [item, setItem] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
+    const [isBookingLoading, setIsBookingLoading] = useState(false); // Loading untuk tombol
     const [error, setError] = useState(null);
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isRequestModalOpen, setIsRequestModalOpen] = useState(false);
+    const [isContactModalOpen, setIsContactModalOpen] = useState(false);
     const [isCopied, setIsCopied] = useState(false);
     const navigate = useNavigate();
     const { isAuthenticated, user } = useAuth();
@@ -41,17 +43,30 @@ const ItemDetailPage = () => {
     }, [id]); // Ambil data lagi jika ID di URL berubah
 
 
-    const handleBooking = async () => {
+    const handleBookingClick = async () => {
         if (!isAuthenticated) {
             alert('Kamu harus login untuk melihat info kontak pemilik.');
             return;
         }
+        // Hanya buka modal konfirmasi request
+        setIsRequestModalOpen(true);
+    };
+    const handleBookingConfirm = async () => {
+        setIsBookingLoading(true); // Tampilkan loading di tombol modal
+        try {
+            // Panggil API createBooking
+            await createBooking(item.id, {});
 
-        // Alih-alih 'alert', kita BUKA MODAL
-        setIsModalOpen(true);
+            // Jika berhasil:
+            setIsRequestModalOpen(false); // Tutup Modal 1
+            setIsContactModalOpen(true);  // Buka Modal 2
 
-        // (Opsional) Jika kamu masih ingin memanggil createBooking:
-        createBooking(item.id, {}).catch(err => console.error(err));
+        } catch (err) {
+            console.error(err);
+            alert('Gagal mengajukan booking. Coba lagi.');
+        } finally {
+            setIsBookingLoading(false); // Sembunyikan loading
+        }
     };
     const handleCopy = () => {
         if (ownerPhone !== 'Kontak tidak tersedia') {
@@ -157,8 +172,13 @@ const ItemDetailPage = () => {
                     )}
                 </div>
                 {/* Kolom Kanan: Info & Aksi */}
+                {/* Kolom Kanan: Info & Aksi */}
                 <div className="detail-info-section">
+
+                    {/* 1. Judul ada di dalam .detail-info-section */}
                     <h1 className="detail-title">{item.name}</h1>
+
+                    {/* 2. Spesifikasi ada di dalam .detail-info-section */}
                     <div className="detail-bottom-section">
                         <div className="specs-section">
                             <h3>Spesifikasi Produk</h3>
@@ -170,29 +190,28 @@ const ItemDetailPage = () => {
                                 <div className="spec-item">
                                     <label>Pemilik</label>
                                     <div className="spec-item-owner">
-                            <span className="username">{item.user?.username || 'Tidak ada'}
-                            </span>
-                                        {/*<span>*/}
-                                        {/*    {item.user?.phoneNumber || 'Tidak ada'}*/}
-                                        {/*</span>*/}
+                                        <span className="username">{item.user?.username || 'Tidak ada'}</span>
                                     </div>
-
                                 </div>
                                 <div className="spec-item">
                                     <label>Status</label>
                                     <span>{item.status || 'Tersedia'}</span>
                                 </div>
-                                {/* Tambahkan spesifikasi lain dari API kamu di sini */}
+                                <div className="spec-item">
+                                    <label>Request</label>
+                                    <span>{item.request || 'Tidak Ada'}</span>
+                                </div>
                             </div>
-                        </div>
-
-                        <div className="description-section">
-                            <h3>Deskripsi Produk</h3>
-                            <p>{item.description}</p>
                         </div>
                     </div>
 
-                    {/* Tombol Aksi */}
+                    {/* 3. Deskripsi ada di dalam .detail-info-section */}
+                    <div className="description-section">
+                        <h3>Deskripsi Produk</h3>
+                        <p>{item.description}</p>
+                    </div>
+
+                    {/* 4. Tombol Aksi ada di dalam .detail-info-section */}
                     <div className="action-button">
                         {isOwner ? (
                             <div className="owner-actions">
@@ -210,31 +229,62 @@ const ItemDetailPage = () => {
                                 </Button>
                             </div>
                         ) : (
-                            // Jika user BUKAN pemilik
-                            <Button variant="primary" onClick={handleBooking}>
+                            <Button variant="primary" onClick={handleBookingClick}>
                                 Ajukan Penukaran
                             </Button>
                         )}
                     </div>
+
+                </div> {/* <-- Div penutup untuk .detail-info-section HARUS DI SINI */}
+
+            </div> {/* <-- Div penutup untuk .detail-top-section */}
+            <Modal isOpen={isRequestModalOpen} onClose={() => setIsRequestModalOpen(false)}>
+                <div className="request-modal-content">
+                    <h2 style={{ marginTop: 0 }}>Konfirmasi Penukaran</h2>
+                    <p>Pemilik barang ini memiliki request penukaran spesifik:</p>
+                    {/* Box untuk menampilkan pesan request */}
+                    <div className="request-box">
+                        <p>{item.request || 'Tidak ada request spesifik.'}</p>
+                    </div>
+                    <p style={{marginTop: '1.5rem', fontWeight: 500}}>
+                        Lanjutkan untuk mengajukan booking dan melihat kontak pemilik?
+                    </p>
+                    {/* Tombol aksi untuk modal ini */}
+                    <div className="request-modal-actions">
+                        <Button
+                            variant="secondary"
+                            onClick={() => setIsRequestModalOpen(false)}
+                            disabled={isBookingLoading}
+                        >
+                            Batal
+                        </Button>
+                        <Button
+                            variant="primary"
+                            onClick={handleBookingConfirm}
+                            disabled={isBookingLoading}
+                        >
+                            {isBookingLoading ? 'Memproses...' : 'Ya, Lanjutkan'}
+                        </Button>
+                    </div>
                 </div>
-            </div>
+            </Modal>
+
+            {/* --- 6. MODAL 2 (Info Kontak) --- */}
             <Modal
-                isOpen={isModalOpen}
+                isOpen={isContactModalOpen} // <-- Gunakan state yang baru
                 onClose={() => {
-                    setIsModalOpen(false);
-                    setIsCopied(false); // Reset tombol copy saat modal ditutup
+                    setIsContactModalOpen(false); // <-- Gunakan state yang baru
+                    setIsCopied(false);
                 }}
             >
                 <div className="modal-content-booking">
                     <h2 style={{ marginTop: 0 }}>Hubungi Pemilik</h2>
                     <p>Permintaan booking telah dikirim ke pemilik.</p>
                     <p>Silakan hubungi pemilik langsung di:</p>
-
                     <div className="contact-copy-wrapper">
                         <h3 className="contact-number-box">
                             {ownerPhone}
                         </h3>
-
                         <button
                             className="copy-button"
                             onClick={handleCopy}
@@ -243,7 +293,6 @@ const ItemDetailPage = () => {
                             {isCopied ? 'Copied!' : 'Copy'}
                         </button>
                     </div>
-
                 </div>
             </Modal>
         </div>

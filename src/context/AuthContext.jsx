@@ -15,7 +15,7 @@ export const AuthProvider = ({ children }) => {
     const fetchAndUpdatePoints = useCallback(async () => {
         try {
             const response = await getPointsBalance();
-            setPoints(response.data.balance || 0); // Asumsi API mengembalikan { balance: 5 }
+            setPoints(response.data.points || 0); // Asumsi API mengembalikan { balance: 5 }
         } catch (err) {
             console.error("Failed to fetch points", err);
         }

@@ -317,3 +317,29 @@
     width: 100%;
     box-sizing: border-box;
 }
+
+.request-modal-content {
+    padding: 1rem;
+    color: #333;
+}
+
+/* Box abu-abu untuk menampilkan pesan request */
+.request-box {
+    background-color: #f0f0f0;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    padding: 0.5rem 1rem;
+}
+.request-box p {
+    margin: 0.5rem 0;
+    font-style: italic;
+    color: #555;
+}
+
+/* Tombol aksi di Modal 1 */
+.request-modal-actions {
+    display: flex;
+    justify-content: flex-end; /* Tombol di kanan */
+    gap: 1rem;
+    margin-top: 2rem;
+}
