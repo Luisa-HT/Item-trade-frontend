@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getItemById, updateItem } from '../../services/itemService';
-import Card from '../../components/common/Card';
 import Button from '../../components/common/Button';
 import '../public/AuthPage.css'; // Pakai ulang layout
 import '../../components/item/ItemForm.css'; // Pakai ulang style form
@@ -86,7 +85,7 @@ const EditItemPage = () => {
 
     return (
         <div className="auth-page-container">
-            <Card className="auth-card">
+            <div className="auth-card">
                 <h2 className="auth-title">Update Barang Kamu</h2>
                 <p className="auth-subtitle">Edit detail barang jualan kamu.</p>
 
@@ -149,7 +148,7 @@ const EditItemPage = () => {
                         {isLoading ? 'Menyimpan...' : 'Simpan Perubahan'}
                     </Button>
                 </form>
-            </Card>
+            </div>
         </div>
     );
 };
